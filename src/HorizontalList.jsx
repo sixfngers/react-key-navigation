@@ -27,7 +27,12 @@ class HorizontalList extends Focusable {
     }
 
     if (nextFocus.isContainer()) {
-      return nextFocus.getDefaultFocus();
+      if (nextFocus.hasChildren()) {
+        return nextFocus.getDefaultFocus();
+      }
+      else {
+        return this.getNextFocus(direction, nextFocus.indexInParent);
+      }
     }
 
     return nextFocus;

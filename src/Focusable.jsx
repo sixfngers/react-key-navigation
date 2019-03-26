@@ -144,6 +144,8 @@ class Focusable extends Component {
     if (this.context.parentFocusable) {
       this.getParent().removeChild(this);
     }
+    
+    this.focusableId = null;
   }
 
   // React Methods
@@ -159,15 +161,6 @@ class Focusable extends Component {
 
   componentWillUnmount() {
     if (this.focusableId !== null) {
-      this.destroyFocusable();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.navDisabled === true && this.props.navDisabled === false) {
-      this.initFocusable();
-    }
-    else if(prevProps.navDisabled === false && this.props.navDisabled === true) {
       this.destroyFocusable();
     }
   }

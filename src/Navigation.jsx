@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import VerticalList from './VerticalList.jsx';
+import VerticalList from './VerticalList';
 
 const reverseDirection = {
   'up': 'down',

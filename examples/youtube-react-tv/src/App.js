@@ -5,7 +5,7 @@ import Sidebar from './Sidebar.js'
 import List from './List.js'
 import Search from './Search.js'
 
-import Navigation, { VerticalList, HorizontalList } from 'react-key-navigation'
+import Navigation, { VerticalList, HorizontalList, DynamicFocusable } from 'react-key-navigation'
 
 class ReactTVApp extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class ReactTVApp extends React.Component {
 
     this.state = {
       active: null,
+      dynamic: false
     }
 
     this.lists = ["Title 1", "Title 2", "Title 3", "Title 4"]
@@ -26,6 +27,11 @@ class ReactTVApp extends React.Component {
     this.setState({active: null});
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({dynamic: true}), 1000)
+    setTimeout(() => this.setState({dynamic: false}), 5000)
+  }
+
   render() {
     return (
       <Navigation>
@@ -34,6 +40,7 @@ class ReactTVApp extends React.Component {
             <Sidebar/>
             <div class="mainbox">
               <VerticalList navDefault>
+                <DynamicFocusable condition={this.state.dynamic} render={<Search/>}/>
                 <Search/>
                 <VerticalList id="content" onBlur={() => this.onBlurLists()}>
                   {this.lists.map((list, i) =>

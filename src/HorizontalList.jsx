@@ -1,7 +1,11 @@
 import React from 'react';
-import Focusable from './Focusable.jsx';
+import Focusable from './Focusable';
 
 class HorizontalList extends Focusable {
+  isContainer() {
+    return true;
+  }
+  
   getNextFocus(direction, focusedIndex) {
     const remainInFocus = this.props.remainInFocus ? this.props.remainInFocus : false;
 
@@ -30,7 +34,7 @@ class HorizontalList extends Focusable {
   }
 
   render() {
-    const { focusId, rootNode, navDefault, forceFocus, retainLastFocus, onFocus, onBlur, onEnterDown, ...props } = this.props;
+    const { focusId, rootNode, navDefault, navDisabled, forceFocus, retainLastFocus, onFocus, onBlur, onEnterDown, ...props } = this.props;
     return <div {...props} />
   }
 }

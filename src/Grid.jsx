@@ -1,8 +1,12 @@
 import React from 'react';
-import Focusable from './Focusable.jsx';
-import HorizontalList from './HorizontalList.jsx';
+import Focusable from './Focusable';
+import HorizontalList from './HorizontalList';
 
 class Grid extends Focusable {
+  isContainer() {
+    return true;
+  }
+  
   getNextFocus(direction, focusedIndex) {
     if (direction !== 'up' && direction !== 'down') {
       return super.getNextFocus(direction, this.indexInParent);

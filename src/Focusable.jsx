@@ -14,6 +14,10 @@ class Focusable extends Component {
   }
 
   isContainer() {
+    return false;
+  }
+
+  hasChildren() {
     return this.children.length > 0;
   }
 
@@ -27,7 +31,7 @@ class Focusable extends Component {
   }
 
   removeChild(child) {
-    this.context.navigationComponent.removeFocusableId(child.focusableId);
+    this.children.splice(child.indexInParent, 1);
     const currentFocusedPath = this.context.navigationComponent.currentFocusedPath;
     const index = currentFocusedPath.indexOf(child);
 
@@ -58,7 +62,7 @@ class Focusable extends Component {
   }
 
   getDefaultFocus() {
-    if (this.isContainer())
+    if (this.isContainer() && this.hasChildren())
       return this.children[this.getDefaultChild()].getDefaultFocus();
 
     return this;
@@ -106,21 +110,15 @@ class Focusable extends Component {
   getNavigator() {
     return this.context.navigationComponent;
   }
+  
+  initFocusable() {
+    if (this.focusableId !== null) {
+      throw Error('Focusable component already initialized');
+    }
 
-  refresh() {
-    this.setState({});
-  }
-
-  // React Methods
-  getChildContext() {
-    return { parentFocusable: this };
-  }
-
-  componentDidMount() {
     if (this.context.parentFocusable) {
       this.buildTreePath();
       this.indexInParent = this.getParent().addChild(this);
-      this.getParent().refresh();
     }
 
     if (this.props.navDefault) {
@@ -132,33 +130,50 @@ class Focusable extends Component {
     }
 
     this.focusableId = this.context.navigationComponent.addComponent(this, this.props.focusId);
+    console.log('init', this.focusableId);
   }
 
-  componentWillUnmount() {
+  destroyFocusable() {
+    console.log('destroy', this.focusableId);
+
+    if (this.focusableId === null) {
+      throw Error('Destroying a uninitialized focusable');
+    }
+
+    this.context.navigationComponent.removeFocusableId(this.focusableId);
     if (this.context.parentFocusable) {
       this.getParent().removeChild(this);
     }
   }
 
-  shouldComponentUpdate() {
-    if (this.children.length > 0) {
-      this.children = [];
-      this.updateChildrenOrder = true;
-    }
-
-    if (this.context.parentFocusable && this.getParent().updateChildrenOrder) {
-      this.indexInParent = this.getParent().addChild(this);
-    }
-
-    return true;
+  // React Methods
+  getChildContext() {
+    return { parentFocusable: this };
   }
 
-  componentDidUpdate() {
-    this.updateChildrenOrder = false;
+  componentDidMount() {
+    if (!this.props.navDisabled) {
+      this.initFocusable();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.focusableId !== null) {
+      this.destroyFocusable();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.navDisabled === true && this.props.navDisabled === false) {
+      this.initFocusable();
+    }
+    else if(prevProps.navDisabled === false && this.props.navDisabled === true) {
+      this.destroyFocusable();
+    }
   }
 
   render() {
-    const { focusId, rootNode, navDefault, forceFocus, retainLastFocus, onFocus, onBlur, onEnterDown, ...props } = this.props;
+    const { focusId, rootNode, navDefault, navDisabled, forceFocus, retainLastFocus, onFocus, onBlur, onEnterDown, ...props } = this.props;
     return <span {...props} />
   }
 }
@@ -175,6 +190,7 @@ Focusable.childContextTypes = {
 Focusable.defaultProps = {
   rootNode: false,
   navDefault: false,
+  navDisabled: false,
   forceFocus: false,
   retainLastFocus: false,
   onFocus: PropTypes.function,

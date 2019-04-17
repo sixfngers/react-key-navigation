@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTV from 'react-tv';
+// import ReactTV from 'react-tv';
 import { Focusable, VerticalList } from 'react-key-navigation';
 
 class ToogleItem extends React.Component {

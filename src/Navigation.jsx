@@ -35,6 +35,8 @@ class Navigation extends Component {
       return;
     }
 
+    // console.log("onKeyDown", evt.keyCode);
+
     const preventDefault = function () {
       evt.preventDefault();
       evt.stopPropagation();

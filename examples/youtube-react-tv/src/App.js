@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactTV from 'react-tv';
+import ReactDOM from 'react-dom';
+// import ReactTV from 'react-tv';
 
 import Sidebar from './Sidebar.js'
 import List from './List.js'
@@ -28,7 +29,7 @@ class ReactTVApp extends React.Component {
 
   render() {
     return (
-      <Navigation supportedKeys={[{code:32, stringValue:"space"}, {code:27, stringValue:"esc"}]}>
+      <Navigation supportedKeys={[{code:32, stringValue:"space"}, {code:27, stringValue:"esc"}, {code:80, stringValue:"p"}, {code:81, stringValue:"pausead"}]}>
         <div id="container">
           <HorizontalList>
             <Sidebar/>
@@ -49,4 +50,6 @@ class ReactTVApp extends React.Component {
   }
 }
 
-ReactTV.render(<ReactTVApp />, document.querySelector('#root'));
+// ReactTV.render(<ReactTVApp />, document.querySelector('#root'));
+
+ReactDOM.render( <ReactTVApp />, document.getElementById("root") );

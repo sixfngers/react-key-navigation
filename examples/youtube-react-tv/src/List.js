@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTV from 'react-tv';
+// import ReactTV from 'react-tv';
 
 import { Focusable, HorizontalList } from 'react-key-navigation';
 

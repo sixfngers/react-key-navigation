@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTV from 'react-tv';
+// import ReactTV from 'react-tv';
 
 import { Focusable } from 'react-key-navigation'
 
@@ -27,13 +27,24 @@ export default class Search extends React.Component {
 
   onSupportedKeyDown(event, navigation) {
     console.log('onSupportedKeyDown', event, navigation);
-    
-    if(event === "space"){
-      this.onEnterDown(event, navigation);
-    }else if(event === "esc"){
-      console.log("esc was pressed");
-      navigation.focusDefault();
+
+    switch(event){
+      case "space":
+        this.onEnterDown(event, navigation);
+        break;
+
+      case "esc":
+        navigation.focusDefault();
+        break;
+
+      case "p":
+        console.log("p was pressed");
+        break;
+
+      default:
+        console.log("unsupported key ", event, " was pressed");
     }
+
   }
 
 

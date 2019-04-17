@@ -6,3 +6,5 @@ package-lock.json
 yarn.lock
 bundle.js
 react-tv
+
+./idea
